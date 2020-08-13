@@ -1,0 +1,24 @@
+$primary-color: white;
+
+.head-content {
+  padding-top: 50px;
+  width: fit-content;
+}
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  color: black;
+  tr {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid $primary-color;
+  }
+}
+.action {
+  display: flex;
+}
+.avatar {
+  width: 200px;
+  height: 150px;
+  text-decoration: overline;
+}
