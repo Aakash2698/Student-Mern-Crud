@@ -14,8 +14,10 @@ $primary-color: white;
     border-bottom: 1px solid $primary-color;
   }
 }
-.action {
+.action 
+{
   display: flex;
+  margin-left: 10px;;
 }
 .avatar {
   width: 200px;

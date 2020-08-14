@@ -36,7 +36,7 @@ export default (state = initialState, action) => {
     case DELETE_STUDENT:
       return {
         students: state.students.filter(
-          (student) => student.id !== action.payload
+          (student) => student._id !== action.payload
         ),
       };
 

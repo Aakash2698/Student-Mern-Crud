@@ -12,10 +12,15 @@ class UpdateStudent extends Component {
       LastName: "",
       Gender: "",
       DOB: "",
-      Hobbies: [],
+      Hobbies: {
+        Reading: false,
+        Developing: false,
+        Designing: false,
+      },
       ProfileImage: "",
     };
   }
+
   componentDidMount() {
     const id = this.props.match.params.id;
     fetch("http://localhost:4000/student/" + id)
@@ -27,7 +32,11 @@ class UpdateStudent extends Component {
           LastName: data.LastName,
           Gender: data.Gender,
           DOB: data.DOB,
-          Hobbies: data.Hobbies,
+          Hobbies: {
+            Reading: data.Hobbies.includes("Reading"),
+            Developing: data.Hobbies.includes("Developing"),
+            Designing: data.Hobbies.includes("Designing"),
+          },
           ProfileImage: data.ProfileImage,
         })
       );
@@ -45,45 +54,53 @@ class UpdateStudent extends Component {
       ProfileImage,
     } = this.state;
 
+    const selectedHobbies = [];
+
+    for (const hobby in Hobbies) {
+      if (Hobbies[hobby]) {
+        selectedHobbies.push(hobby);
+      }
+    }
+
     const updContact = {
       id,
       FirstName,
       LastName,
       Gender,
       DOB,
-      Hobbies,
+      Hobbies: selectedHobbies,
     };
-    // let data = new FormData();
-    // data.append("ProfileImage", ProfileImage);
-    // this.props
-    //   .uploadData(data)
-    //   .then((res) =>
-    //   {
-    //     console.log("res", res.data.filename);
-    //     updContact.filename = res.data.filename;
-    //     this.props.updateData(id, updContact);
-    //   })
-    //   .catch((err) =>
-    //   {
-    //     console.log(err);
-    //   });
+
+    let data = new FormData();
+    data.append("ProfileImage", ProfileImage);
+    this.props
+      .uploadData(data)
+      .then((res) => {
+        console.log("res", res.data.filename);
+        updContact.filename = res.data.filename;
+        this.props.updateData(id, updContact);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   radioChange = (e) => {
     this.setState({
       Gender: e.target.value,
     });
   };
+  handleCheckbox = (e) => {
+    const state = this.state;
 
-  checkInputChange = (e) => {
-    const target = e.target;
-    var value = target.value;
-
-    if (target.checked) {
-      this.state.Hobbies[value] = value;
-    } else {
-      this.state.Hobbies.splice(value, 1);
-    }
+    this.setState({
+      ...state,
+      Hobbies: {
+        ...state.Hobbies,
+        [e.target.name]: !state.Hobbies[e.target.name],
+      },
+    });
   };
+
   onInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -93,7 +110,13 @@ class UpdateStudent extends Component {
     });
   };
   render() {
-    const { FirstName, LastName, Gender, DOB, Hobbies,ProfileImage } = this.state;
+    const {
+      FirstName,
+      LastName,
+      Gender,
+      DOB,      
+      ProfileImage,
+    } = this.state;
     return (
       <form
         onSubmit={(e) => this.onUpdate(e)}
@@ -166,10 +189,11 @@ class UpdateStudent extends Component {
             <div>
               <input
                 type="checkbox"
-                name="Hobbies"
+                name="Reading"
                 id="Reading"
                 value="Reading"
-                onChange={(e) => this.checkInputChange(e)}
+                checked={this.state.Hobbies.Reading}
+                onChange={this.handleCheckbox}
               />
             </div>
             <div>
@@ -179,10 +203,10 @@ class UpdateStudent extends Component {
             <div>
               <input
                 type="checkbox"
-                name="Hobbies"
+                name="Developing"
                 id="Developing"
-                value="Developing"
-                onChange={(e) => this.checkInputChange(e)}
+                checked={this.state.Hobbies.Developing}
+                onChange={this.handleCheckbox}
               />
             </div>
             <div>
@@ -191,10 +215,10 @@ class UpdateStudent extends Component {
             <div>
               <input
                 type="checkbox"
-                name="Hobbies"
-                id="Desiging"
-                value="Desiging"
-                onChange={(e) => this.checkInputChange(e)}
+                name="Designing"
+                id="Designing"
+                checked={this.state.Hobbies.Designing}
+                onChange={this.handleCheckbox}
               />
             </div>
             <div>

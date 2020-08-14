@@ -4,6 +4,8 @@ import { DISPLAY_STUDENT } from "../ActionType/ActionType";
 import { UPDATE_STUDENT } from "../ActionType/ActionType";
 import { DELETE_STUDENT } from "../ActionType/ActionType";
 
+
+// GET STUDENT //
 export const getData = () => {
   return async (dispatch) => {
     const url = "http://localhost:4000/student";
@@ -15,8 +17,8 @@ export const getData = () => {
     });
   };
 };
-export const uploadData = (formData) => 
-{
+// UPLOAD IMAGE //
+export const uploadData = (formData) => {
   return async (dispatch) => {
     const url = "http://localhost:4000/student/upload";
     const response = await fetch(url, {
@@ -28,11 +30,11 @@ export const uploadData = (formData) =>
       type: UPLOAD_STUDENT,
       payload: data,
     });
-    return data
+    return data;
   };
 };
-export const insertData = (data) => {
-  const value = data;
+// INSERT STUDENT //
+export const insertData = (value) => { 
   return async (dispatch) => {
     const url = "http://localhost:4000/student";
     const response = await fetch(url, {
@@ -48,11 +50,10 @@ export const insertData = (data) => {
       type: ADD_STUDENT,
       payload: data,
     });
-    
   };
 };
-export const updateData = (ID, data) => {
-  const value = data;
+// UPDATE STUDENT //
+export const updateData = (ID, value) => {
   return async (dispatch) => {
     const url = "http://localhost:4000/student/" + ID;
     const response = await fetch(url, {
@@ -64,13 +65,13 @@ export const updateData = (ID, data) => {
       body: JSON.stringify(value),
     });
     const data = await response.json();
-    console.log("Fetch data :-", data);
     dispatch({
       type: UPDATE_STUDENT,
       payload: data,
     });
   };
 };
+// DELETE STUDENT //
 export const deleteData = (ID) => {
   return async (dispatch) => {
     dispatch({
@@ -87,5 +88,3 @@ export const deleteData = (ID) => {
     });
   };
 };
-
-

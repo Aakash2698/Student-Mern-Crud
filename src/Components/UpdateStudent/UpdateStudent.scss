@@ -1,19 +1,18 @@
-body {
-  font-family: "Raleway", sans-serif;
-}
+$border-color: #ccc;
+$margin-auto : auto;
 h1 {
   text-align: center;
-  margin: 20px auto;
+  margin: 20px $margin-auto;
 }
 form {
   width: 70%;
-  margin: auto;
+  margin:$margin-auto;
 }
 fieldset {
   padding: 50px;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   border-radius: 10px;
-  margin: 20px auto;
+  margin: 20px $margin-auto;
   box-shadow: 0 0 5px #333;
   background-color: #eee;
 }
@@ -28,8 +27,11 @@ select {
   height: 40px;
   padding: 5px;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   margin-bottom: 20px;
+}
+.male {
+  float: left;
 }
 .button {
   background-color: #ff6655;
@@ -44,16 +46,14 @@ select {
 
 .flex-container {
   display: flex;
-
-  .flex-container > div {
-    padding: 0 10px;
+  div {
+    padding: 0 5px;
   }
 }
-.form-check-inline 
-{
+
+.form-check-inline {
   margin: 0 15px;
 }
-.checkbox 
-{
+.checkbox {
   display: flex;
 }

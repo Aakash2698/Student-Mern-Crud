@@ -8,13 +8,13 @@ class Navbar extends Component {
           <div className="brand">
             <p>Student Crud</p>
           </div>
-          <nav>       
+          <nav>
             <ul className="nav-list">
               <li>
-                <a href="/Home">Home</a>
+                <a href="/Home">home</a>
               </li>
               <li>
-                <a href="/NewStudent">New Student</a>
+                <a href="/NewStudent">add-student</a>
               </li>
             </ul>
           </nav>

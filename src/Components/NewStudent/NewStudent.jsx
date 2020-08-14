@@ -22,11 +22,10 @@ class NewStudent extends Component {
     };
   }
 
-  //Submit//
   onSubmit = (e) => {
     e.preventDefault();
     console.log(this.state.Hobbies);
-  
+
     const {
       FirstName,
       LastName,
@@ -35,18 +34,17 @@ class NewStudent extends Component {
       Hobbies,
       ProfileImage,
     } = this.state;
-  
+
     const selectedHobbies = [];
-    
-    for(let hobby in Hobbies) {
-      if(Hobbies[hobby]) {
-        selectedHobbies.push(hobby)
+
+    for (let hobby in Hobbies) {
+      if (Hobbies[hobby]) {
+        selectedHobbies.push(hobby);
       }
     }
-  
+
     console.log(selectedHobbies);
-    selectedHobbies.join(',')
-  
+
     let NewStudent = {
       FirstName,
       LastName,
@@ -54,7 +52,7 @@ class NewStudent extends Component {
       DOB,
       Hobbies: selectedHobbies,
     };
-  
+
     this.setState({
       FirstName: "",
       LastName: "",
@@ -67,7 +65,7 @@ class NewStudent extends Component {
       },
       ProfileImage: "",
     });
-    
+
     let data = new FormData();
     data.append("ProfileImage", ProfileImage);
     this.props
@@ -81,7 +79,7 @@ class NewStudent extends Component {
         console.log(err);
       });
   };
-  
+
   //Inputbox//
   onInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -101,10 +99,10 @@ class NewStudent extends Component {
       ...state,
       Hobbies: {
         ...state.Hobbies,
-        [e.target.name]: !state.Hobbies[e.target.name]
-      }
-    })
-  }
+        [e.target.name]: !state.Hobbies[e.target.name],
+      },
+    });
+  };
 
   // upload Image //
   onUploadHandler = (e) => {
@@ -122,6 +120,12 @@ class NewStudent extends Component {
 
   render() {
     const { FirstName, LastName, Gender, DOB, Hobbies } = this.state;
+
+    let { imagePreviewUrl } = this.state;
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = <img width="200" height="150" src={imagePreviewUrl} />;
+    }
 
     return (
       <form
@@ -239,13 +243,10 @@ class NewStudent extends Component {
             name="ProfileImage"
             accept="image/*"
             onChange={(e) => this.onUploadHandler(e)}
+            required
           />
-          <img
-            className="avatar"
-            src={this.state.imagePreviewUrl}
-            alt="ProfileImage"
-            width="150"
-          />
+          {$imagePreview}
+
           <br />
           <br />
           <button className="button">Submit</button>

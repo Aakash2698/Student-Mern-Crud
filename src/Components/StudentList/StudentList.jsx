@@ -26,15 +26,13 @@ class StudentList extends Component {
     this.props.deleteData(id);
   };
   render() {
-   
     let stud = [];
     stud = this.props.stud;
 
     const list =
       stud.length !== 0 &&
       stud.map((stud, index) => {
-        console.log(stud);
-        console.log("-----STUD---", stud.Hobbies);
+        console.log(stud.id);
 
         return (
           <tr key={stud._id}>
@@ -42,7 +40,7 @@ class StudentList extends Component {
             <td>{stud.LastName}</td>
             <td>{stud.Gender}</td>
             <td>{stud.DOB}</td>
-            <td>{stud.Hobbies.join(',')}</td>
+            <td>{stud.Hobbies.join(",")}</td>
             <td>
               <img
                 className="avatar"
@@ -50,15 +48,20 @@ class StudentList extends Component {
                 alt="ProfileImage"
               />
             </td>
-            <td className="action">
-              <NavLink exact to={`/UpdateStudent/${stud._id}`}>
-                <h3>
-                  <GrEdit />
-                </h3>
-              </NavLink>
-              <h3 onClick={() => this.Delete(stud._id)}>
-                <BsFillTrashFill />
-              </h3>
+            <td>
+              <td>
+                <NavLink exact to={`/UpdateStudent/${stud._id}`}>
+                  <button className="btn btn-outline-success">Edit</button>
+                </NavLink>
+              </td>
+              <td>
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() => this.Delete(stud._id)}
+                >
+                  Delete
+                </button>
+              </td>
             </td>
           </tr>
         );
