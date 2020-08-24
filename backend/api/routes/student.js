@@ -13,17 +13,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, Date.now() + "." + file.originalname.split(".").pop());
   },
-  // filename: function (req, file, cb) {
-  //   cb(null, new Date().toISOString() + file.originalname);
-  // },
 });
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
 
 const upload = multer({ storage: storage });
 
@@ -67,22 +57,36 @@ router.post("/", (req, res, next) => {
       });
     });
 });
-//GET ALLDATA //
-router.get("/", (req, res, next) => {
-  Student.find()
-    .exec()
-    .then((docs) => {
-      console.log(docs);
-
-      res.status(200).json(docs);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
+//all data //
+router.post("/list/:skip/:limit", (req, res, next) => {
+  let condition = {};
+  if (req.body.searchText) {
+    let searchText = new RegExp(req.body.searchText, "i");
+    condition = {
+      $or: [
+        { FirstName: searchText },
+        { LastName: searchText },
+        { Gender: searchText },
+        { DOB: searchText },
+        { Hobbies: searchText },
+      ],
+    };
+  }
+  Student.find(condition)
+    .skip(parseInt(req.params.skip))
+    .limit(parseInt(req.params.limit))
+    .then((result) => {
+      Student.count().then((total) => {
+        let count = total;
+        res.status(200).json({ result, count });
       });
+    })
+    .catch((error) => {
+      console.log("err===>", error);
+      res.send(error);
     });
 });
+
 //GET BY ID//
 router.get("/:studentId", (req, res, next) => {
   const id = req.params.studentId;
@@ -104,6 +108,7 @@ router.get("/:studentId", (req, res, next) => {
 // EDIT BY ID //
 router.put("/:studentId", (req, res, next) => {
   const id = req.params.studentId;
+  console.log("*-*-*-", req.body);
   Student.findByIdAndUpdate(
     { _id: id },
     {
@@ -113,7 +118,7 @@ router.put("/:studentId", (req, res, next) => {
         Gender: req.body.Gender,
         DOB: req.body.DOB,
         Hobbies: req.body.Hobbies,
-        ProfileImage: req.body.filename,
+        ProfileImage: req.body.ProfileImage,
       },
     },
     { new: true }
@@ -124,9 +129,7 @@ router.put("/:studentId", (req, res, next) => {
       res.status(200).json(result);
     })
     .catch((err) => {
-      console.log(500).json({
-        error: err,
-      });
+      console.log(err);
     });
 });
 

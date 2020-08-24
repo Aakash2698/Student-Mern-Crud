@@ -80,19 +80,16 @@ class NewStudent extends Component {
       });
   };
 
-  //Inputbox//
-  onInputChange = (e) => {
+  onInputHandler = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  //radio button//
-  radioChange = (e) => {
+
+  onRadioHandler = (e) => {
     this.setState({
       Gender: e.target.value,
     });
   };
-  //Checkbox //
-
-  handleCheckbox = (e) => {
+  onCheckboxHandler = (e) => {
     const state = this.state;
 
     this.setState({
@@ -104,7 +101,6 @@ class NewStudent extends Component {
     });
   };
 
-  // upload Image //
   onUploadHandler = (e) => {
     this.setState({
       ProfileImage: e.target.files[0],
@@ -119,12 +115,12 @@ class NewStudent extends Component {
   };
 
   render() {
-    const { FirstName, LastName, Gender, DOB, Hobbies } = this.state;
+    const { Gender, } = this.state;
 
     let { imagePreviewUrl } = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl) {
-      $imagePreview = <img width="200" height="150" src={imagePreviewUrl} />;
+      $imagePreview = <img width="200" height="150" src={imagePreviewUrl} alt="urlimg"/>;
     }
 
     return (
@@ -135,35 +131,30 @@ class NewStudent extends Component {
       >
         <h1>Student Form</h1>
         <fieldset>
-          {/* first name */}
           <label htmlFor="firstName">First Name</label>
           <input
             type="text"
             id="firstName"
-            name="FirstName"
-            value={FirstName}
+            name="FirstName"           
             placeholder="First Name"
-            onChange={(e) => this.onInputChange(e)}
+            onChange={(e) => this.onInputHandler(e)}
           />
-          {/* last name */}
           <label htmlFor="lastName">Last Name</label>
           <input
             type="text"
             id="lastName"
-            name="LastName"
-            value={LastName}
+            name="LastName"          
             placeholder="Last Name"
-            onChange={(e) => this.onInputChange(e)}
+            onChange={(e) => this.onInputHandler(e)}
           />
-          {/* Gender */}
           <div className="flex-container">
-            <label htmlFor="Gender">Gender</label>
+            <label htmlFor="Gender">Gender:</label>
             <div>
               <input
                 type="radio"
                 value="Male"
                 checked={Gender === "Male"}
-                onChange={(e) => this.radioChange(e)}
+                onChange={(e) => this.onRadioHandler(e)}
               />
             </div>
             <div>
@@ -174,26 +165,23 @@ class NewStudent extends Component {
                 type="radio"
                 value="Female"
                 checked={Gender === "Female"}
-                onChange={(e) => this.radioChange(e)}
+                onChange={(e) => this.onRadioHandler(e)}
               />
             </div>
             <div>
               <label htmlFor="Female">Female</label>
             </div>
           </div>
-
           <br />
-          {/* birthday */}
           <label htmlFor="birthday">Date of birth</label>
           <input
             type="date"
             id="birthday"
-            name="DOB"
-            value={DOB}
-            onChange={(e) => this.onInputChange(e)}
+            name="DOB"          
+            onChange={(e) => this.onInputHandler(e)}
           />
           <br />
-          {/* Hobbies */}
+
           <div className="flex-container">
             <label>Hobbies :</label>
             <div>
@@ -202,7 +190,7 @@ class NewStudent extends Component {
                 name="Reading"
                 id="Checkbox1"
                 checked={this.state.Hobbies.Reading}
-                onChange={this.handleCheckbox}
+                onChange={this.onCheckboxHandler}
               />
             </div>
             <div>
@@ -215,7 +203,7 @@ class NewStudent extends Component {
                 name="Developing"
                 id="Checkbox2"
                 checked={this.state.Hobbies.Developing}
-                onChange={this.handleCheckbox}
+                onChange={this.onCheckboxHandler}
               />
             </div>
             <div>
@@ -227,7 +215,7 @@ class NewStudent extends Component {
                 name="Designing"
                 id="Checkbox3"
                 checked={this.state.Hobbies.Designing}
-                onChange={this.handleCheckbox}
+                onChange={this.onCheckboxHandler}
               />
             </div>
             <div>
@@ -235,7 +223,7 @@ class NewStudent extends Component {
             </div>
           </div>
           <br />
-          {/* profile image */}
+
           <label htmlFor="image">Select Profile image:</label>
           <input
             type="file"

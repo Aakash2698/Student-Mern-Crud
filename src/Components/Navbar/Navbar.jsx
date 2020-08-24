@@ -11,11 +11,11 @@ class Navbar extends Component {
           <nav>
             <ul className="nav-list">
               <li>
-                <a href="/Home">home</a>
+                <a href="/home">Home</a>
               </li>
               <li>
-                <a href="/NewStudent">add-student</a>
-              </li>
+                <a href="/new-student">Add Student</a>
+              </li>                
             </ul>
           </nav>
         </div>

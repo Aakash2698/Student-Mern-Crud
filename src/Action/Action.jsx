@@ -4,19 +4,28 @@ import { DISPLAY_STUDENT } from "../ActionType/ActionType";
 import { UPDATE_STUDENT } from "../ActionType/ActionType";
 import { DELETE_STUDENT } from "../ActionType/ActionType";
 
-
-// GET STUDENT //
-export const getData = () => {
+// GET DATA //
+export const getData = (key, skip, limit) => {
   return async (dispatch) => {
-    const url = "http://localhost:4000/student";
-    const response = await fetch(url);
+    let url = "http://localhost:4000/student/list/" + skip + "/" + limit;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(key),
+    });
     const data = await response.json();
+    console.log("Action", data.result);
     dispatch({
       type: DISPLAY_STUDENT,
-      payload: data,
+      payload: data.result,
+      total: data.count,
     });
   };
 };
+
 // UPLOAD IMAGE //
 export const uploadData = (formData) => {
   return async (dispatch) => {
@@ -34,7 +43,7 @@ export const uploadData = (formData) => {
   };
 };
 // INSERT STUDENT //
-export const insertData = (value) => { 
+export const insertData = (value) => {
   return async (dispatch) => {
     const url = "http://localhost:4000/student";
     const response = await fetch(url, {

@@ -53,15 +53,12 @@ class UpdateStudent extends Component {
       Hobbies,
       ProfileImage,
     } = this.state;
-
     const selectedHobbies = [];
-
     for (const hobby in Hobbies) {
       if (Hobbies[hobby]) {
         selectedHobbies.push(hobby);
       }
     }
-
     const updContact = {
       id,
       FirstName,
@@ -69,29 +66,22 @@ class UpdateStudent extends Component {
       Gender,
       DOB,
       Hobbies: selectedHobbies,
+      ProfileImage,
     };
-
-    let data = new FormData();
-    data.append("ProfileImage", ProfileImage);
-    this.props
-      .uploadData(data)
-      .then((res) => {
-        console.log("res", res.data.filename);
-        updContact.filename = res.data.filename;
-        this.props.updateData(id, updContact);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.props.updateData(id, updContact);
   };
-  radioChange = (e) => {
+  onInputHandler = (e) => {
+    const state = this.state;
+    this.setState({ ...state, [e.target.name]: e.target.value });
+  };
+  onRadioHandler = (e) => {
     this.setState({
       Gender: e.target.value,
     });
   };
-  handleCheckbox = (e) => {
-    const state = this.state;
 
+  onCheckboxHandler = (e) => {
+    const state = this.state;
     this.setState({
       ...state,
       Hobbies: {
@@ -100,23 +90,30 @@ class UpdateStudent extends Component {
       },
     });
   };
-
-  onInputChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
   onUploadHandler = (e) => {
-    this.setState({
-      ProfileImage: e.target.files[0],
-    });
+    const state = this.state;
+    if (e.target.files[0]) {
+      let data = new FormData();
+      data.append("ProfileImage", e.target.files[0]);
+
+      this.props
+        .uploadData(data)
+        .then((res) => {
+          console.log("res", res.data.filename);
+
+          this.setState({
+            ...state,
+            ProfileImage: res.data.filename,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
+
   render() {
-    const {
-      FirstName,
-      LastName,
-      Gender,
-      DOB,      
-      ProfileImage,
-    } = this.state;
+    const { FirstName, LastName, Gender, DOB, ProfileImage } = this.state;
     return (
       <form
         onSubmit={(e) => this.onUpdate(e)}
@@ -124,8 +121,7 @@ class UpdateStudent extends Component {
         encType="multipart/form-data"
       >
         <h1>Update Student</h1>
-        <fieldset>
-          {/* first name */}
+        <fieldset>        
           <label htmlFor="first-name">First Name</label>
           <input
             type="text"
@@ -133,9 +129,8 @@ class UpdateStudent extends Component {
             name="FirstName"
             placeholder="First Name"
             value={FirstName}
-            onChange={(e) => this.onInputChange(e)}
-          />
-          {/* last name */}
+            onChange={(e) => this.onInputHandler(e)}
+          />       
           <label htmlFor="last-name">Last Name</label>
           <input
             type="text"
@@ -143,9 +138,8 @@ class UpdateStudent extends Component {
             name="LastName"
             placeholder="Last Name"
             value={LastName}
-            onChange={(e) => this.onInputChange(e)}
-          />
-          {/* Gender */}
+            onChange={(e) => this.onInputHandler(e)}
+          />       
           <div className="flex-container">
             <label htmlFor="Gender">Gender</label>
             <div>
@@ -153,7 +147,7 @@ class UpdateStudent extends Component {
                 type="radio"
                 value="Male"
                 checked={Gender === "Male"}
-                onChange={(e) => this.radioChange(e)}
+                onChange={(e) => this.onRadioHandler(e)}
               />
             </div>
             <div>
@@ -164,7 +158,7 @@ class UpdateStudent extends Component {
                 type="radio"
                 value="Female"
                 checked={Gender === "Female"}
-                onChange={(e) => this.radioChange(e)}
+                onChange={(e) => this.onRadioHandler(e)}
               />
             </div>
             <div>
@@ -172,18 +166,16 @@ class UpdateStudent extends Component {
             </div>
           </div>
 
-          <br />
-          {/* birthday */}
+          <br />        
           <label htmlFor="birthday">Date of birth</label>
           <input
             type="date"
             id="birthday"
             name="DOB"
             value={DOB}
-            onChange={(e) => this.onInputChange(e)}
+            onChange={(e) => this.onInputHandler(e)}
           />
-          <br />
-          {/* Hobbies */}
+          <br />        
           <div className="flex-container">
             <label>Hobbies :</label>
             <div>
@@ -193,7 +185,7 @@ class UpdateStudent extends Component {
                 id="Reading"
                 value="Reading"
                 checked={this.state.Hobbies.Reading}
-                onChange={this.handleCheckbox}
+                onChange={this.onCheckboxHandler}
               />
             </div>
             <div>
@@ -206,7 +198,7 @@ class UpdateStudent extends Component {
                 name="Developing"
                 id="Developing"
                 checked={this.state.Hobbies.Developing}
-                onChange={this.handleCheckbox}
+                onChange={this.onCheckboxHandler}
               />
             </div>
             <div>
@@ -218,15 +210,14 @@ class UpdateStudent extends Component {
                 name="Designing"
                 id="Designing"
                 checked={this.state.Hobbies.Designing}
-                onChange={this.handleCheckbox}
+                onChange={this.onCheckboxHandler}
               />
             </div>
             <div>
               <label htmlFor="inlineCheckboxh3">Designing</label>
             </div>
           </div>
-          <br />
-          {/* profile photo */}
+          <br />      
           <label htmlFor="img">Select Profile image:</label>
           <input
             type="file"

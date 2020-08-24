@@ -2,10 +2,9 @@ $content-width: 1000px;
 $nav-height: 60px;
 $nav-background: #262626;
 $nav-font-color: #ffffff;
-$link-hover-color:#f16556;
+$link-hover-color: #f16556;
 
-.navigation 
-{
+.navigation {
   height: $nav-height;
   background: $nav-background;
 }
@@ -48,11 +47,9 @@ nav {
         }
         &:not(:only-child):after {
           padding-left: 4px;
-          content: ' ▾';
+          content: "▾";
         }
       }
-      
     }
   }
 }
-

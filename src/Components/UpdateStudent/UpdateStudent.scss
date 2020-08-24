@@ -1,12 +1,13 @@
 $border-color: #ccc;
-$margin-auto : auto;
+$margin-auto: auto;
+
 h1 {
   text-align: center;
   margin: 20px $margin-auto;
 }
 form {
   width: 70%;
-  margin:$margin-auto;
+  margin: $margin-auto;
 }
 fieldset {
   padding: 50px;
